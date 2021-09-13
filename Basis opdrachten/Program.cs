@@ -15,27 +15,56 @@ namespace Basis_opdrachten
             VolumeCal(ref lenght, ref widht, ref height, ref volume);
             MassCal(ref volume, ref index, ref mass);
             Output(ref surface, ref volume, ref mass);
+            menu();
+
+            switch(menu())
+            {
+                case 1:
+                    Input(ref lenght, ref widht, ref height, ref index);
+                    SurfaceCal(ref lenght, ref widht, ref height, ref surface);
+                    VolumeCal(ref lenght, ref widht, ref height, ref volume);
+                    MassCal(ref volume, ref index, ref mass);
+                    Output(ref surface, ref volume, ref mass);
+                    menu();
+                    break;
+                case 2:
+                    Console.WriteLine("BYE");
+                    break;
+            }
         }
 
         static void Input(ref double lenght, ref double widht, ref double height, ref double index)
         {
             string temp = " ";
-            Console.WriteLine("INPUT\n-----\n" );
+            Console.WriteLine("INPUT\n-----\n");
+
+            do
+            {
             Console.WriteLine("geef de lengte in(m):");
             temp = Console.ReadLine();
             double.TryParse(temp, out lenght);
+            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
 
+            do
+            {
             Console.WriteLine("geef de breedte in(m):");
             temp = Console.ReadLine();
             double.TryParse(temp, out widht);
+            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
 
+            do
+            {
             Console.WriteLine("geef de hoogte in(m):");
             temp = Console.ReadLine();
             double.TryParse(temp, out height);
+            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
 
+            do
+            {
             Console.WriteLine("geef de massa index in(kg/m²):");
             temp = Console.ReadLine();
             double.TryParse(temp, out index);
+            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
 
         }
         static void SurfaceCal(ref double lenght, ref double widht, ref double height,ref double surface)
@@ -56,8 +85,39 @@ namespace Basis_opdrachten
             Console.WriteLine($"De oppervlakte bedraagt:\n{surface} m²");
             Console.WriteLine($"Het volume bedraagt:\n{volume} m³");
             Console.WriteLine($"De massa bedraagt:\n{mass} kg");
+        }
+        static bool ControlNumber(double number)
+        {
+            if (number <= 0)
+                return false;
 
-
+            return true;
+        }
+        static bool ControlNumberIfLetter(string temp)
+        {
+            double number;
+            if (double.TryParse(temp, out number) == false)
+            {
+                Console.WriteLine("Geef een geldig cijfer in.");
+                return false;
+            }
+                return true;
+        }
+        static int menu()
+        {
+            string temp  =" ";
+            int choice = 0;
+            Console.WriteLine("\n\nCHOICE\n------\n");
+            Console.WriteLine("1) opnieuw");
+            Console.WriteLine("2) Stop \n");
+            do
+            {
+             
+                temp = Console.ReadLine();
+                int.TryParse(temp, out choice);
+                return choice;
+            } while (ControlNumberIfLetter(temp) != true && ControlNumber(choice) != true);
         }
     }
 }
+
