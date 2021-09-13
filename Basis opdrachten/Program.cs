@@ -7,84 +7,88 @@ namespace Basis_opdrachten
 
         static void Main()
         {
-           double lenght = 0, widht = 0, height = 0, index = 0;
-           double surface = 0, volume = 0, mass = 0;
+            double[] InputOutput = new double[7];
+            double temp = 0;
 
-            Input(ref lenght,ref widht,ref height,ref index);
-            SurfaceCal(ref lenght, ref widht, ref height, ref surface);
-            VolumeCal(ref lenght, ref widht, ref height, ref volume);
-            MassCal(ref volume, ref index, ref mass);
-            Output(ref surface, ref volume, ref mass);
-            menu();
+            Input(ref InputOutput);
+            SurfaceCal(ref InputOutput);
+            VolumeCal(ref InputOutput);
+            MassCal(ref InputOutput);
+            Output(ref InputOutput);
 
-            switch(menu())
-            {
+            do
+            { 
+             switch(menu())
+             {
                 case 1:
-                    Input(ref lenght, ref widht, ref height, ref index);
-                    SurfaceCal(ref lenght, ref widht, ref height, ref surface);
-                    VolumeCal(ref lenght, ref widht, ref height, ref volume);
-                    MassCal(ref volume, ref index, ref mass);
-                    Output(ref surface, ref volume, ref mass);
-                    menu();
+                    Input(ref InputOutput);
+                    SurfaceCal(ref InputOutput);
+                    VolumeCal(ref InputOutput);
+                    MassCal(ref InputOutput);
+                    Output(ref InputOutput);
                     break;
                 case 2:
                     Console.WriteLine("BYE");
+                        temp++;
                     break;
-            }
+             }
+            } while (temp == 0);
         }
 
-        static void Input(ref double lenght, ref double widht, ref double height, ref double index)
+        static void Input(ref double[] InputOutput)
         {
             string temp = " ";
             Console.WriteLine("INPUT\n-----\n");
-
-            do
+            for (int i = 0; i < 4; i++)
             {
-            Console.WriteLine("geef de lengte in(m):");
-            temp = Console.ReadLine();
-            double.TryParse(temp, out lenght);
-            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
+                switch (i)
+                {
+                    case 0:
+                        Console.Write("geef de lengte in(m):");
+                        break;
+                    case 1:
+                        Console.Write("geef de breedte in(m):");
+                        break;
+                    case 2:
+                        Console.Write("geef de hoogte in(m):");
+                        break;
+                    case 3:
+                        Console.Write("geef de massa index in(kg/m²):");
+                        break;
+                }
 
-            do
-            {
-            Console.WriteLine("geef de breedte in(m):");
-            temp = Console.ReadLine();
-            double.TryParse(temp, out widht);
-            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
+                do
+                {
 
-            do
-            {
-            Console.WriteLine("geef de hoogte in(m):");
-            temp = Console.ReadLine();
-            double.TryParse(temp, out height);
-            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
+                    temp = Console.ReadLine();
+                    double.TryParse(temp, out InputOutput[i]);
+                } while (ControlNumberIfLetter(temp) != true && ControlNumber(InputOutput[i]) != true);
 
-            do
-            {
-            Console.WriteLine("geef de massa index in(kg/m²):");
-            temp = Console.ReadLine();
-            double.TryParse(temp, out index);
-            } while (ControlNumberIfLetter(temp) != true && ControlNumber(lenght) != true);
+            }
 
         }
-        static void SurfaceCal(ref double lenght, ref double widht, ref double height,ref double surface)
+        static void SurfaceCal(ref double[] InputOutput)
         {
-            surface = (2 * lenght * widht) + (2 * lenght * height) + (2 * height * widht);
+
+            InputOutput[4] = (2 * InputOutput[0] * InputOutput[1]) + (2 * InputOutput[0] * InputOutput[2]) + (2 * InputOutput[2] * InputOutput[1]);
+
         }
-        static void VolumeCal(ref double lenght, ref double widht, ref double height,ref double volume)
+        static void VolumeCal(ref double[] InputOutput)
         {
-            volume = lenght * widht * height;
+
+            InputOutput[5] = InputOutput[0] * InputOutput[1] * InputOutput[2];
+            
         }
-        static void MassCal(ref double volume, ref double index, ref double mass)
+        static void MassCal(ref double[] InputOutput)
         {
-            mass = volume * index;
+            InputOutput[6] = InputOutput[5] * InputOutput[3];
         }
-        static void Output(ref double surface, ref double volume, ref double mass)
+        static void Output(ref double[] InputOutput)
         {
             Console.WriteLine("\n\nOUTPUT\n------\n");
-            Console.WriteLine($"De oppervlakte bedraagt:\n{surface} m²");
-            Console.WriteLine($"Het volume bedraagt:\n{volume} m³");
-            Console.WriteLine($"De massa bedraagt:\n{mass} kg");
+            Console.WriteLine($"De oppervlakte bedraagt:\n{InputOutput[4]} m²");
+            Console.WriteLine($"Het volume bedraagt:\n{InputOutput[5]} m³");
+            Console.WriteLine($"De massa bedraagt:\n{InputOutput[6]} kg");
         }
         static bool ControlNumber(double number)
         {
