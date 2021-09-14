@@ -7,35 +7,33 @@ namespace Basis_opdrachten
 
         static void Main()
         {
-            double[] InputOutput = new double[7];
+            double[,] InputOutput = new double[10,7];
             double temp = 0;
-
-            Input(ref InputOutput);
-            SurfaceCal(ref InputOutput);
-            VolumeCal(ref InputOutput);
-            MassCal(ref InputOutput);
-            Output(ref InputOutput);
+            int row = 0;
 
             do
             { 
-             switch(menu())
+             switch(menu(row))
              {
                 case 1:
-                    Input(ref InputOutput);
-                    SurfaceCal(ref InputOutput);
-                    VolumeCal(ref InputOutput);
-                    MassCal(ref InputOutput);
-                    Output(ref InputOutput);
-                    break;
+                    Input(ref InputOutput, row);
+                    SurfaceCal(ref InputOutput, row);
+                    VolumeCal(ref InputOutput, row);
+                    MassCal(ref InputOutput, row);
+                    row++;
+                        break;
                 case 2:
+                        Output(ref InputOutput, row);
+                        break;
+                case 3:
                     Console.WriteLine("BYE");
                         temp++;
-                    break;
+                        break;
              }
             } while (temp == 0);
         }
 
-        static void Input(ref double[] InputOutput)
+        static void Input(ref double[,] InputOutput, int row)
         {
             string temp = " ";
             Console.WriteLine("INPUT\n-----\n");
@@ -61,34 +59,38 @@ namespace Basis_opdrachten
                 {
 
                     temp = Console.ReadLine();
-                    double.TryParse(temp, out InputOutput[i]);
-                } while (ControlNumberIfLetter(temp) != true && ControlNumber(InputOutput[i]) != true);
+                    double.TryParse(temp, out InputOutput[row,i]);
+                } while (ControlNumberIfLetter(temp) != true && ControlNumber(InputOutput[row,i]) != true);
 
             }
 
         }
-        static void SurfaceCal(ref double[] InputOutput)
+        static void SurfaceCal(ref double[,] InputOutput,int row)
         {
-
-            InputOutput[4] = (2 * InputOutput[0] * InputOutput[1]) + (2 * InputOutput[0] * InputOutput[2]) + (2 * InputOutput[2] * InputOutput[1]);
-
+            InputOutput[row,4] = (2 * InputOutput[row,0] * InputOutput[row,1]) + (2 * InputOutput[row,0] * InputOutput[row,2]) + (2 * InputOutput[row,2] * InputOutput[row,1]);
+           
         }
-        static void VolumeCal(ref double[] InputOutput)
+        static void VolumeCal(ref double[,] InputOutput, int row)
         {
-
-            InputOutput[5] = InputOutput[0] * InputOutput[1] * InputOutput[2];
+            InputOutput[row,5] = InputOutput[row,0] * InputOutput[row,1] * InputOutput[row,2];
             
         }
-        static void MassCal(ref double[] InputOutput)
+        static void MassCal(ref double[,] InputOutput, int row)
         {
-            InputOutput[6] = InputOutput[5] * InputOutput[3];
+            InputOutput[row,6] = InputOutput[row,5] * InputOutput[row,3];
+           
         }
-        static void Output(ref double[] InputOutput)
+        static void Output(ref double[,] InputOutput,int row)
         {
-            Console.WriteLine("\n\nOUTPUT\n------\n");
-            Console.WriteLine($"De oppervlakte bedraagt:\n{InputOutput[4]} m²");
-            Console.WriteLine($"Het volume bedraagt:\n{InputOutput[5]} m³");
-            Console.WriteLine($"De massa bedraagt:\n{InputOutput[6]} kg");
+
+            for (int i = 0; i < row; i++)     
+            {
+                Console.WriteLine($"\n\nOUTPUT BALK {i}\n------\n");
+                Console.WriteLine($"De oppervlakte bedraagt:\n{InputOutput[i,4]} m²");
+                Console.WriteLine($"Het volume bedraagt:\n{InputOutput[i,5]} m³");
+                Console.WriteLine($"De massa bedraagt:\n{InputOutput[i,6]} kg");
+            }
+
         }
         static bool ControlNumber(double number)
         {
@@ -107,21 +109,27 @@ namespace Basis_opdrachten
             }
                 return true;
         }
-        static int menu()
+        static int menu(int row)
         {
             string temp  =" ";
             int choice = 0;
             Console.WriteLine("\n\nCHOICE\n------\n");
-            Console.WriteLine("1) opnieuw");
-            Console.WriteLine("2) Stop \n");
+            Console.WriteLine("1) invoer nieuwe balk (MAX 10)");
+            Console.WriteLine("2) uitvoer alle balken ");
+            Console.WriteLine("3) Stop \n");
+          
             do
             {
-             
+
                 temp = Console.ReadLine();
                 int.TryParse(temp, out choice);
+                if (row > 9 && choice == 1) 
+                {
+                    Console.WriteLine("\nJe hebt de maximum balken bereikt vul opnieuw de keuze in");
+                    return 4;
+                }
                 return choice;
-            } while (ControlNumberIfLetter(temp) != true && ControlNumber(choice) != true);
+            } while (ControlNumberIfLetter(temp) != true && choice >3 && choice < 0);
         }
     }
 }
-
